@@ -18,6 +18,7 @@ public class ŞifrelemeSayfası implements ActionListener
     JPanel üst = new JPanel();
     JPanel alt = new JPanel();
     JPanel sağ = new JPanel();
+    JLabel label = new JLabel();
     String SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public ŞifrelemeSayfası()
@@ -26,8 +27,19 @@ public class ŞifrelemeSayfası implements ActionListener
         frame.setLayout(new GridLayout(1,2));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        mesaj.setPreferredSize(new Dimension(40,150));
+        key.setPreferredSize(new Dimension(40,150));
+        mes.setFont(new Font("Arial",Font.BOLD,15));
+        anahtar.setFont(new Font("Arial",Font.BOLD,15));
+        gönder.addActionListener(this);
+
+        sağ.setPreferredSize(new Dimension(600,800));
+        sağ.setLayout(new GridLayout(13,2,5,5));
+
+
         sol.setPreferredSize(new Dimension(600,800));
-        sol.setLayout(new FlowLayout());
+        sol.setLayout(new GridLayout(2,1));
+
 
         üst.setPreferredSize(new Dimension(600,600));
         üst.setLayout(new FlowLayout());
@@ -36,14 +48,18 @@ public class ŞifrelemeSayfası implements ActionListener
         üst.add(anahtar);
         üst.add(key);
         üst.add(gönder);
+        sol.add(üst);
 
-        mesaj.setPreferredSize(new Dimension(40,150));
-        key.setPreferredSize(new Dimension(40,150));
-        mes.setFont(new Font("Arial",Font.BOLD,15));
-        anahtar.setFont(new Font("Arial",Font.BOLD,15));
-        gönder.addActionListener(this);
 
-        frame.add(üst);
+
+        label.setFont(new Font("Arial",Font.BOLD,10));
+
+        alt.setPreferredSize(new Dimension(600,200));
+        alt.setLayout(new FlowLayout());
+        alt.add(label);
+        sol.add(alt);
+
+        frame.add(sol);
 
 
         frame.setVisible(true);
@@ -73,6 +89,31 @@ public class ŞifrelemeSayfası implements ActionListener
                 int yeniIndex = (index + Integer.parseInt(keytex)) % SYMBOLS.length();
                 char yeniHarf = SYMBOLS.charAt(yeniIndex);
                 sonuc += yeniHarf;
+            }
+            label.setText(sonuc);
+
+            for (int i = 1 ;i<=SYMBOLS.length();i++)
+            {
+                int keys = 1;
+                int mesajUzunlukk = mesajtex.length();
+                String sonucsağ = "";
+
+                for (int j = 0; j < mesajUzunlukk; j++) {
+                    char harf = mesajtex.charAt(i);
+                    if (harf == ' ') {
+                        sonucsağ += " ";
+                        continue;
+                    }
+
+                    char buyukHarf = Character.toUpperCase(harf);
+                    int index = SYMBOLS.indexOf(buyukHarf);
+                    int yeniIndex = ((index - Integer.parseInt(keytex))+SYMBOLS.length()) % SYMBOLS.length();
+                    char yeniHarf = SYMBOLS.charAt(yeniIndex);
+                    sonucsağ += yeniHarf;
+                    JLabel cozulmuslabel = new JLabel(keys +":"+" "+ sonucsağ);
+                    sağ.add(cozulmuslabel);
+                }
+
             }
 
 
